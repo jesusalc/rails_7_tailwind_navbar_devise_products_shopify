@@ -2,7 +2,7 @@
 
 if defined?(BetterErrors)
   # BetterErrors.editor = "rubymine://open?file=%{file}:%{line}"
-  BetterErrors.editor = "x-mine://open?file=%{file}:%{line}"
+  BetterErrors.editor = 'x-mine://open?file=%{file}:%{line}'
   #
   # e.g. in config/initializers/better_errors.rb
   # This will stop BetterErrors from trying to render larger objects, which can cause

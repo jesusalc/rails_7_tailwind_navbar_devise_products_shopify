@@ -21,4 +21,9 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
+
+    rails s
+    rm db/development.sqlite3 db/test.sqlite3 ; rake db:create db:migrate db:seed
+    # control c
+    rails s
+

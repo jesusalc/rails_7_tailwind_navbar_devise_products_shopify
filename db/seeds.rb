@@ -18,5 +18,11 @@ p = Product.create(title: 'Deore_XT_30g',
                    description: 'Leicht, schön und schnell ist es, das Topmodell unter den Trekkingrädern der Fahrradmanufaktur.',
                    image: 'https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-150x150.jpg 150w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-297x198.jpg 297w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-1160x773.jpg 1160w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-100x67.jpg 100w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-1000x667.jpg 1000w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-1000x773.jpg 1000w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-1000x666.jpg 1000w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-660x440.jpg 660w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-660x660.jpg 660w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-660x742.jpg 660w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-373x248.jpg 373w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-373x373.jpg 373w,https://velophil.test/wp-content/uploads/2018/03/08_T-700_Deore_XT_30g_Disc_Dia_DSC_8948-373x420.jpg 373w',
                    price: 2_234_600)
-
+# 100.times do
+#   Product.create(
+#     title: Faker::Lorem.word,
+#     description: Faker::Lorem.paragraphs(2),
+#     price: Faker::Commerce.price,
+#     image: Faker::Image.image
+#   )
 user = User.create! :name => 'Test Latori', :email => 'test@latori.com', :password => '#HQ$lz$$blSbZ2tsnd0v', :password_confirmation => '#HQ$lz$$blSbZ2tsnd0v'

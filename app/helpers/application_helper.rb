@@ -1,14 +1,19 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   def flash_classes(flash_type)
-    flash_base = "px-2 py-4 mx-auto font-sans font-medium text-center text-white"
+    flash_base = 'px-2 py-4 mx-auto font-sans font-medium text-center text-white'
     {
       notice: "bg-indigo-600 #{flash_base}",
-      error: "bg-red-600 #{flash_base}",
+      error: "bg-red-600 #{flash_base}"
     }.stringify_keys[flash_type.to_s] || flash_type.to_s
   end
 
   def nav_classes
-    ["devise/registrations", "devise/sessions", "devise/confirmations", "devise/passwords", "devise/unlocks"].include?(params[:controller]) ? "hidden" : nil
+    if ['devise/registrations', 'devise/sessions', 'devise/confirmations', 'devise/passwords',
+        'devise/unlocks'].include?(params[:controller])
+      'hidden'
+    end
   end
 
   def label_class(options = {})
@@ -36,35 +41,35 @@ module ApplicationHelper
 
   def theme_button(theme)
     themes = {
-      primary: "primary",
-      secondary: "secondary",
-      transparent: "transparent",
-      dark: "dark"
+      primary: 'primary',
+      secondary: 'secondary',
+      transparent: 'transparent',
+      dark: 'dark'
     }
 
     case theme
     when themes[:primary]
-      "bg-indigo-600 hover:bg-indigo-700 text-white"
+      'bg-indigo-600 hover:bg-indigo-700 text-white'
     when themes[:secondary]
-      "bg-teal-600 hover:bg-teal-700 text-white"
+      'bg-teal-600 hover:bg-teal-700 text-white'
     when themes[:transparent]
-      "bg-transparent hover:bg-gray-100 text-gray-700"
+      'bg-transparent hover:bg-gray-100 text-gray-700'
     when themes[:dark]
-      "bg-gray-800 text-white shadow-sm hover:bg-gray-900"
+      'bg-gray-800 text-white shadow-sm hover:bg-gray-900'
     else
-      "bg-white border border-gray-300 shadow-sm hover:bg-gray-100"
+      'bg-white border border-gray-300 shadow-sm hover:bg-gray-100'
     end
   end
 
   def style_button(variant, theme)
-    base = "rounded text-center font-sans font-normal outline-none leading-normal cursor-pointer transition ease-in-out duration-200 font-medium"
+    base = 'rounded text-center font-sans font-normal outline-none leading-normal cursor-pointer transition ease-in-out duration-200 font-medium'
 
     case variant
-    when "large"
+    when 'large'
       "px-5 py-4 text-lg #{base} #{theme}"
-    when "small"
+    when 'small'
       "py-2 px-4 text-sm #{base} #{theme}"
-    when "expanded"
+    when 'expanded'
       "p-3 w-full block #{base} #{theme}"
     else
       "px-5 py-2 text-base #{base} #{theme}"

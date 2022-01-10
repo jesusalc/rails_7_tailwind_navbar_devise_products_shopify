@@ -110,6 +110,8 @@ GEM
       dotenv (= 2.7.6)
       railties (>= 3.2)
     erubi (1.10.0)
+    faker (2.19.0)
+      i18n (>= 1.6, < 2)
     friendly_id (5.4.2)
       activerecord (>= 4.0.0)
     globalid (1.0.0)
@@ -274,6 +276,7 @@ DEPENDENCIES
   debug
   devise (~> 4.8)
   dotenv-rails
+  faker (~> 2.19)
   friendly_id
   importmap-rails
   jbuilder
