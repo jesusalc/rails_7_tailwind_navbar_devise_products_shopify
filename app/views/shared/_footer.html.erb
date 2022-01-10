@@ -1,0 +1,75 @@
+<div class="px-4">
+  <div class="max-w-3xl bg-white rounded-lg mx-auto my-16 p-16">
+    <h1 class="text-2xl font-medium mb-2">CRUD Shopify </h1>
+    <h2 class="font-medium text-sm text-indigo-400 mb-4 uppercase tracking-wide">Rails CRUD application </h2>
+    <span>
+      Product Model:
+    </span>
+    <ul>
+      <li>- title</li>
+      <li>- description</li>
+      <li>- image</li>
+      <li>- price</li>
+    </ul>
+  </div>
+</div>
+
+<div class="max-w-5xl mx-auto mt-4 lg:p-12 p-4 grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-4 relative z-20">
+  <div class="lg:col-span-12 text-center">
+    <h1 class="mb-4 text-2xl font-semibold text-gray-800 text-center mt-3">
+      <span class="sr-only">Extras</span>
+    </h1>
+    <p class="leading-snug text-gray-700 text-lg max-w-3xl mx-auto pb-6">Connects to Shop using REST api</p>
+  </div>
+  <div class="lg:col-span-6">
+    <h3 class="font-semibold text-lg text-gray-700">What's under the hood?</h3>
+    <ul class="list-disc leading-relaxed pl-4 pt-2">
+      <li class="pb-1">Powered
+        by <%= link_to "Ruby on Rails 7", "https://rubyonrails.org", target: :_blank, class: "text-indigo-600 hover:text-indigo-700 underline" %></li>
+      <li class="pb-1"><%= link_to "Friendly ID", "https://github.com/norman/friendly_id", target: :_blank, class: "text-indigo-600 hover:text-indigo-700 underline" %>
+        preconfigured for your next app idea.
+      </li>
+      <li class="pb-1"><%= link_to "Devise", "https://github.com/heartcombo/devise", target: :_blank, class: "text-indigo-600 hover:text-indigo-700 underline" %>
+        authentication strategies out of the box based on a default User model.
+      </li>
+      <li class="pb-1"><%= link_to "Tailwind CSS", "https://tailwindcss.com", target: :_blank, class: "text-indigo-600 hover:text-indigo-700 underline" %>
+        by default (optionally swap for Bootstrap, Bulma, PostCSS, or Sass*).
+      </li>
+
+      <li class="pb-1">Customized and easily themeable Devise views.</li>
+      <li class="pb-1">View helpers for quick form styling with Tailwind CSS.</li>
+
+    </ul>
+
+    <p class="text-xs text-gray-600 max-w-lg mt-6">*This template comes with support for Tailwind CSS only. You will
+      need to adjust the markup to make use of other
+      frameworks. <%= link_to "Read more", "https://github.com/rails/cssbundling-rails#installation", target: :_blank, class: "underline text-indigo-600 hover:text-indigo-700" %></p>
+
+    <div class="mt-6">
+      <a href="https://www.buymeacoffee.com/jesusalc" target="_blank"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&amp;emoji=&amp;slug=jesusalc&amp;button_colour=f0f0f0&amp;font_colour=333333&amp;font_family=Cookie&amp;outline_colour=333333&amp;coffee_colour=555555"></a>
+    </div>
+  </div>
+  <div class="lg:col-span-3">
+    <h3 class="font-semibold text-gray-700">Useful links</h3>
+    <ul class="list-disc leading-loose pl-4 mb-2 text-sm">
+      <li>
+        <%= link_to "Rails Guides", "https://guides.rubyonrails.org/", class: "underline text-indigo-600 hover:text-indigo-700" %>
+      </li>
+      <li>
+        <%= link_to "Rails API Documentation", "https://api.rubyonrails.org/", class: "underline text-indigo-600 hover:text-indigo-700" %>
+      </li>
+      <li>
+        <%= link_to "Rails Forum", "https://discuss.rubyonrails.org/", class: "underline text-indigo-600 hover:text-indigo-700" %>
+      </li>
+      <li>
+        <%= link_to "Devise Docs", "https://github.com/heartcombo/devise", class: "underline text-indigo-600 hover:text-indigo-700" %>
+      </li>
+      <li>
+        <%= link_to "Friendly ID Docs", "https://github.com/norman/friendly_id", class: "underline text-indigo-600 hover:text-indigo-700" %>
+      </li>
+      <li>
+        <%= link_to "Tailwind CSS Docs", "https://tailwindcss.com/docs/installation", class: "underline text-indigo-600 hover:text-indigo-700" %>
+      </li>
+    </ul>
+  </div>
+</div>

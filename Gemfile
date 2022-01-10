@@ -80,6 +80,7 @@ end
 # to allow us to hide our API key and password in a .env file:
 gem 'dotenv-rails'
 gem 'pry'
+gem 'friendly_id'
 gem 'rest-client'
 
 

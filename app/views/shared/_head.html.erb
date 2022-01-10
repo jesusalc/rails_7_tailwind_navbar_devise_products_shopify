@@ -1,0 +1,25 @@
+ <head>
+  <title>
+    <%= content_for?(:title) ? yield(:title) : "Probeausgabe7turbo" %>
+  </title>
+   <meta charset="utf-8">
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
+  <%= javascript_include_tag "application", defer: true %>
+
+   <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+   <%= javascript_importmap_tags %>
+   <%#= javascript_include_tag 'https://js.stripe.com/v3/', 'data-turbo-track': 'reload' %>
+
+   <style>
+       #menu-toggle:checked + #menu {
+           display: block;
+       }
+   </style>
+</head>
