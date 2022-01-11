@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'shopify/shopify_api'
 
 class ProductsController < ApplicationController
@@ -32,7 +33,7 @@ class ProductsController < ApplicationController
                               locals: { product: @product }),
           turbo_stream.update('flash_turbo_shared_flash_notice',
                               partial: 'shared/flash_notice',
-                              locals: { flash: flash })
+                              locals: { flash: })
         ]
       end
     end
@@ -55,7 +56,7 @@ class ProductsController < ApplicationController
                                    locals: { product: @product }),
               turbo_stream.update('flash_turbo_shared_flash_notice',
                                   partial: 'shared/flash_notice',
-                                  locals: { flash: flash }),
+                                  locals: { flash: }),
               turbo_stream.update('index_turbo_count', html: Product.count)
             ]
           end
@@ -75,7 +76,7 @@ class ProductsController < ApplicationController
                                   status: :unprocessable_entity),
               turbo_stream.update('flash_turbo_shared_flash_notice',
                                   partial: 'shared/flash_notice',
-                                  locals: { flash: flash })
+                                  locals: { flash: })
             ]
           end
           format.html { render :new, status: :unprocessable_entity }
@@ -95,7 +96,7 @@ class ProductsController < ApplicationController
                                 status: :unprocessable_entity),
             turbo_stream.update('flash_turbo_shared_flash_notice',
                                 partial: 'shared/flash_notice',
-                                locals: { flash: flash })
+                                locals: { flash: })
           ]
         end
         format.html { render :new, status: :unprocessable_entity }
@@ -116,7 +117,7 @@ class ProductsController < ApplicationController
                                   locals: { product: Product.new }),
               turbo_stream.update('flash_turbo_shared_flash_notice',
                                   partial: 'shared/flash_notice',
-                                  locals: { flash: flash })
+                                  locals: { flash: })
             ]
           end
           format.html { redirect_to product_url(@product), notice: 'Product was successfully updated.' }
@@ -133,7 +134,7 @@ class ProductsController < ApplicationController
                                   status: :unprocessable_entity),
               turbo_stream.update('flash_turbo_shared_flash_notice',
                                   partial: 'shared/flash_notice',
-                                  locals: { flash: flash })
+                                  locals: { flash: })
             ]
           end
           format.html { render :edit, status: :unprocessable_entity }
@@ -153,7 +154,7 @@ class ProductsController < ApplicationController
                                 status: :unprocessable_entity),
             turbo_stream.update('flash_turbo_shared_flash_notice',
                                 partial: 'shared/flash_notice',
-                                locals: { flash: flash })
+                                locals: { flash: })
           ]
         end
         format.html { render :edit, status: :unprocessable_entity }
@@ -190,7 +191,7 @@ class ProductsController < ApplicationController
                                 status: :unprocessable_entity),
             turbo_stream.update('flash_turbo_shared_flash_notice',
                                 partial: 'shared/flash_notice',
-                                locals: { flash: flash })
+                                locals: { flash: })
           ]
         end
         format.html { render :edit, status: :unprocessable_entity }
@@ -204,13 +205,9 @@ class ProductsController < ApplicationController
   def api_update(params)
     new_product = product_template(params)
     shop_url = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com"
-    Shopify::Base.site = shop_url
-    Shopify::Base.api_version = ENV['SHOPIFY_API_VERSION'] # '<version_name>' # find the latest stable api_version here: https://shopify.dev/concepts/about-apis/versioning
-    shop = Shopify::Shop.current
-    byebug
     flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
-    response = RestClient.post "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json",
-                               product: new_product
+    response = RestClient.put "#{shop_url}/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json",
+                              product: new_product
     return false if response.nil?
 
     flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gesendet'
@@ -303,6 +300,7 @@ class ProductsController < ApplicationController
     flash = {}
     flash[:error] = ''
     flash[:notice] = ''
+    flash
   end
 
   # Only allow a list of trusted parameters through.
@@ -310,4 +308,3 @@ class ProductsController < ApplicationController
     params.require(:product).permit(:id, :title, :description, :image, :price)
   end
 end
-

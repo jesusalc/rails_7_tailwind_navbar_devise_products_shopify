@@ -38,7 +38,7 @@ namespace :shop do
                                                            { state: 'My Nonce' })
     p permission_url
 
-    token = shopify_session.request_token({ permission_url: permission_url })
+    token = shopify_session.request_token({ permission_url: })
     p token
     # a list of all granted scopes
     granted_scopes = shopify_session.extra['scope']
@@ -52,7 +52,7 @@ namespace :shop do
     # the time at which this token expires; this is automatically converted from 'expires_in' returned by Shopify
     expires_at = shopify_session.extra['expires_at']
     p expires_at
-    shopify_session = ShopifyAPI::Session.new(domain: "#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com", token: token,
+    shopify_session = ShopifyAPI::Session.new(domain: "#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com", token:,
                                               api_version: '2021-10', extra: 'extra')
     p shopify_session
   end
