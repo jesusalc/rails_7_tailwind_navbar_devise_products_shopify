@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'shopify/shopify_api'
 
 class ProductsController < ApplicationController
   include ActionView::RecordIdentifier
