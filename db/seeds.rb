@@ -27,5 +27,5 @@ p = Product.create(title: 'Deore_XT_30g',
 #     price: Faker::Commerce.price,
 #     image: Faker::Image.image
 #   )
-user = User.create! name: 'Test Latori', email: ENV['SHOPIFY_API_EMAIL'], password: ENV['SHOPIFY_API_PASSWORD'],
-                    password_confirmation: ENV['SHOPIFY_API_PASSWORD']
+user = User.create! name: ENV['SHOPIFY_API_USER_NAME'], email: ENV['SHOPIFY_API_USER_EMAIL'], password: ENV['SHOPIFY_API_USER_PASSWORD'],
+                    password_confirmation: ENV['SHOPIFY_API_USER_PASSWORD']

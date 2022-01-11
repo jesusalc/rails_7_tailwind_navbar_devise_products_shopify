@@ -11,7 +11,9 @@ namespace :products do
 
   desc 'Downloads and updated from Store Shopify to local Table Products'
   task get: :environment do
-    products_unparsed = RestClient.get("https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json")
+    shop_url = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json"
+    p "Trying <#{shop_url}>"
+    products_unparsed = RestClient.get(shop_url)
     products_products = JSON.parse(products_unparsed)
     remote_products = products_products['products']
     local_products = Product.all
