@@ -84,7 +84,7 @@ GEM
     bindex (0.8.1)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
-    bootsnap (1.9.3)
+    bootsnap (1.9.4)
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
@@ -125,7 +125,7 @@ GEM
       activerecord (>= 4.0.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
-    graphql (1.13.2)
+    graphql (1.13.4)
     graphql-client (0.17.0)
       activesupport (>= 3.0)
       graphql (~> 1.10)
@@ -239,10 +239,6 @@ GEM
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
-    shopify_api (6.0.0)
-      activeresource (>= 3.0.0)
-      graphql-client
-      rack
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -310,7 +306,6 @@ DEPENDENCIES
   redis (~> 4.0)
   rest-client
   selenium-webdriver
-  shopify_api
   sprockets-rails
   sqlite3 (~> 1.4)
   stimulus-rails
@@ -321,7 +316,7 @@ DEPENDENCIES
   webdrivers
 
 RUBY VERSION
-   ruby 3.0.0p0
+   ruby 3.1.0p0
 
 BUNDLED WITH
    2.3.4

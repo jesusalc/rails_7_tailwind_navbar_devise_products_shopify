@@ -22,15 +22,22 @@ Things you may want to cover:
 * Deployment instructions
 
 
-    shopify login --store=gmbh-teststore
+    rbenv install 3.1.0 
+    rbenv local 3.1.0
+    bundle
+    rbenv rehash
 
+    gem install shopify_cli
+    rbenv rehash
+    shopify login --store=gmbh-teststore
+    
     cp .env.sample .env
     nano .env
     # add all the values for your store 
-
+    
     rails s
     rm db/development.sqlite3 db/test.sqlite3 ; rake db:create db:migrate db:seed
     # browser opens and asks for confirmation of first user
     # control c
     rails s
-
+    
