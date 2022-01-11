@@ -151,6 +151,7 @@ class ProductsController < ApplicationController
 
   private
 
+
   def api_update(params)
     new_product = product_template(params)
     shop_url = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com"
@@ -173,6 +174,27 @@ class ProductsController < ApplicationController
   end
 
   def api_create(params)
+    new_product = product_template(params)
+    response = RestClient.post "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json",
+                               product: new_product
+    if response.nil?
+      flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
+      return false
+    end
+    flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gesendet'
+    true
+  rescue RestClient::UnprocessableEntity
+    flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
+    false
+  rescue SocketError
+    flash[:error] = 'Es gibt keine Internet nach Shopify'
+    false
+  rescue  RestClient::BadRequest
+    flash[:error] = 'Schlechte Anfrage'
+    false
+  end
+
+  def api_destroy(params)
     new_product = product_template(params)
     response = RestClient.post "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json",
                                product: new_product
