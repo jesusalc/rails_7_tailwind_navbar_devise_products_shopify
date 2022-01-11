@@ -22,8 +22,13 @@ Things you may want to cover:
 * Deployment instructions
 
 
+    cp .env.sample .env
+    nano .env
+    # add all the values for your store 
+
     rails s
     rm db/development.sqlite3 db/test.sqlite3 ; rake db:create db:migrate db:seed
+    # browser opens and asks for confirmation of first user
     # control c
     rails s
 
