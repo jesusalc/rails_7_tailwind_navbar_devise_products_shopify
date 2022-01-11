@@ -40,10 +40,11 @@ rake importmap:install                  # Setup Importmap for the app
 rake log:clear                          # Truncates all/specified *.log files in log/ to zero bytes (specify which logs with LOGS=test,development)
 rake middleware                         # Prints out your Rack middleware stack
 rake products:get                       # Downloads and updated from Store Shopify to local Table Products
+rake products:vendors                   # vendors
 rake restart                            # Restart app by touching tmp/restart.txt
 rake secret                             # Generate a cryptographically secure secret key (this is typically used to generate a secret for cookie sessions)
-rake shop:public                        # TODO
-rake shop:token                         # TODO
+rake shop:public                        # session
+rake shop:token                         # token
 rake stats                              # Report code statistics (KLOCs, etc) from the application or engine
 rake stimulus:install                   # Install Stimulus into the app
 rake stimulus:install:importmap         # Install Stimulus on an app running importmap-rails

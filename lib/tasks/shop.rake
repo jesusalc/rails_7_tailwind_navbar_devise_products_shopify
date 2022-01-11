@@ -5,7 +5,7 @@ namespace :shop do
   task token: :environment do
     shop_url = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com"
     ShopifyAPI::Base.site = shop_url
-    ShopifyAPI::Base.api_version = '2021-10' # '<version_name>' # find the latest stable api_version here: https://shopify.dev/concepts/about-apis/versioning
+    ShopifyAPI::Base.api_version = ENV['SHOPIFY_API_VERSION'] # '<version_name>' # find the latest stable api_version here: https://shopify.dev/concepts/about-apis/versioning
     p shop_url
 
     shop = ShopifyAPI::Shop.current

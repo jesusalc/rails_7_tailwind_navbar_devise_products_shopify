@@ -90,4 +90,4 @@ gem 'dotenv-rails'
 gem 'friendly_id'
 gem 'graphql-client' # shopify_api
 gem 'rest-client'
-# gem 'shopify_api' # not compatible with rails 7
+gem 'shopify_api' # not compatible with rails 7
