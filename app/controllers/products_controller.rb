@@ -34,7 +34,7 @@ class ProductsController < ApplicationController
           format.turbo_stream do
             render turbo_stream: [
               turbo_stream.update('index_turbo_new_product',
-                                  partial: 'products/form',
+                                  partial: 'products/article_form',
                                   locals: { product: Product.new }),
               turbo_stream.prepend('index_turbo_products',
                                    partial: 'products/product',
@@ -52,7 +52,7 @@ class ProductsController < ApplicationController
           format.turbo_stream do
             render turbo_stream: [
               turbo_stream.update('index_turbo_new_product',
-                                  partial: 'products/form',
+                                  partial: 'products/article_form',
                                   locals: {
                                     product: @product,
                                     status: :unprocessable_entity
@@ -72,7 +72,7 @@ class ProductsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('index_turbo_new_product',
-                                partial: 'products/form',
+                                partial: 'products/article_form',
                                 locals: {
                                   product: Product.new(product_params),
                                   status: :unprocessable_entity
@@ -97,7 +97,7 @@ class ProductsController < ApplicationController
           format.turbo_stream do
             render turbo_stream: [
               turbo_stream.update('index_turbo_new_product',
-                                  partial: 'products/form',
+                                  partial: 'products/article_form',
                                   locals: { product: Product.new })
             ]
           end
@@ -107,7 +107,7 @@ class ProductsController < ApplicationController
           format.turbo_stream do
             render turbo_stream: [
               turbo_stream.update('index_turbo_new_product',
-                                  partial: 'products/form',
+                                  partial: 'products/article_form',
                                   locals: {
                                     product: @product,
                                     status: :unprocessable_entity
@@ -124,7 +124,7 @@ class ProductsController < ApplicationController
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.update('index_turbo_new_product',
-                                partial: 'products/form',
+                                partial: 'products/article_form',
                                 locals: {
                                   product: @product,
                                   status: :unprocessable_entity
@@ -183,6 +183,9 @@ class ProductsController < ApplicationController
     end
     flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gesendet'
     true
+  rescue RestClient::Unauthorized
+    flash[:error] = 'Shopify sagt 401 Nicht autorisiert'
+    false
   rescue RestClient::UnprocessableEntity
     flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
     false

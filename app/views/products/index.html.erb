@@ -1,26 +1,31 @@
 <div class="w-full">
   <noscript>
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block"
-       id="notice">
-      <%= notice %></p>
-  <% end %>
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block"
+         id="notice">
+        <%= notice %></p>
+    <% end %>
   </noscript>
 
-  <div  class="mx-auto md:w-2/3 w-full flex">
+  <div class="mx-auto md:w-2/3 w-full flex">
     <div id="index_turbo_new_product" class="mx-auto grid grid-cols-3 gap-4">
-      <%= render partial: "products/form", locals: { product: Product.new} %>
+      <%= render partial: "products/article_form", locals: { product: Product.new } %>
     </div>
   </div>
   <div class="flex justify-between items-center">
     <h1 class="font-bold text-4xl">Products</h1>
-    <%= link_to 'New product', new_product_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+    <%= link_to new_product_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium", value: "Neu" do %>
+      <svg class="group-hover:text-light-blue-600 text-light-blue-500 mr-2" width="12" height="20" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M6 5a1 1 0 011 1v3h3a1 1 0 110 2H7v3a1 1 0 11-2 0v-3H2a1 1 0 110-2h3V6a1 1 0 011-1z"/>
+      </svg>
+    <% end %>
 
   </div>
 
   <div class="mx-auto md:w-2/3 w-full flex">
-    <div class="mx-auto" id="index_turbo_products" >
-      <%= render @products %>
+    <div class="mx-auto" id="index_turbo_products">
+      <%#= render @products %>
+      <%= render partial: "products/articles", locals: { products: @products } %>
     </div>
   </div>
 </div>

@@ -1,0 +1,6 @@
+
+<ul class=" divide-y divide-gray-100 ">
+  <% products.each do |product| %>
+    <%= render partial: "products/article", locals: { product: product } %>
+  <% end %>
+</ul>

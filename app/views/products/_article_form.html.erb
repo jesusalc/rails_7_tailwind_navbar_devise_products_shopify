@@ -1,0 +1,36 @@
+<% if product&.errors&.any? %>
+  <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+    <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+    <ul>
+      <% product.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_with(model: product, class: "contents") do |form| %>
+  <article>
+    <dl class="flex flex-wrap divide-y divide-gray-200 border-b border-gray-200 text-sm sm:text-base lg:text-sm xl:text-base dark:divide-gray-200/5 dark:border-gray-200/5">
+      <div class="w-full flex-none flex items-center p-0 sm:p-0 lg:p-0 xl:p-0">
+        <dt class="w-2/5 sm:w-1/4 flex-none text-gray-900 font-medium dark:text-gray-300 transition-opacity duration-1500 delay-500 opacity-25"><%= form.label :title %></dt>
+        <dd class="italic transition-opacity duration-1500 delay-500 opacity-25"><%= form.text_field :title, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %></dd>
+      </div>
+      <div class="w-full flex-none flex items-center p-0 sm:p-0 lg:p-0 xl:p-0">
+        <dt class="w-2/5 sm:w-1/4 flex-none text-gray-900 font-medium dark:text-gray-300 transition-opacity duration-1500 delay-500 opacity-25"><%= form.label :description %></dt>
+        <dd class="italic transition-opacity duration-1500 delay-500 opacity-25"><%= form.text_area :description, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %></dd>
+      </div>      
+      <div class="w-full flex-none flex items-center p-0 sm:p-0 lg:p-0 xl:p-0">
+        <dt class="w-2/5 sm:w-1/4 flex-none text-gray-900 font-medium dark:text-gray-300 transition-opacity duration-1500 delay-500 opacity-25"><%= form.label :image %></dt>
+        <dd class="italic transition-opacity duration-1500 delay-500 opacity-25"><%= form.text_field :image, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %></dd>
+      </div>
+      <div class="w-full flex-none flex items-center p-0 sm:p-0 lg:p-0 xl:p-0">
+        <dt class="w-2/5 sm:w-1/4 flex-none text-gray-900 font-medium dark:text-gray-300 transition-opacity duration-1500 delay-500 opacity-25"><%= form.label :price %></dt>
+        <dd class="italic transition-opacity duration-1500 delay-500 opacity-25"><%= form.text_field :price, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %></dd>
+      </div>
+    </dl>
+    <div class="inline">
+      <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+    </div>
+  </article>
+<% end %>
