@@ -4,11 +4,13 @@
 
 <body class="font-sans font-normal leading-normal text-gray-800 bg-white flex flex-col min-h-screen antialiased bg-gray-200">
 <header class="lg:px-16 px-6 bg-white flex flex-wrap items-center lg:py-0 py-2">
-  <%= render "shared/flash_notice" %>
+  <div id="flash_turbo_shared_flash_notice">
+    <%= render "shared/flash_notice" %>
+  </div>
   <%= render "shared/navbar" %>
 </header>
 
-<main class="container mx-auto mt-28 px-5 flex flex-grow">
+<main class="container mx-auto px-5 flex flex-grow">
   <%= content_for?(:content) ? yield(:content) : yield %>
 </main>
 <%= render "shared/footer" %>

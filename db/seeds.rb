@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
@@ -25,4 +27,5 @@ p = Product.create(title: 'Deore_XT_30g',
 #     price: Faker::Commerce.price,
 #     image: Faker::Image.image
 #   )
-user = User.create! :name => 'Test Latori', :email => 'test@latori.com', :password => '#HQ$lz$$blSbZ2tsnd0v', :password_confirmation => '#HQ$lz$$blSbZ2tsnd0v'
+user = User.create! name: 'Test Latori', email: 'test@latori.com', password: '#HQ$lz$$blSbZ2tsnd0v',
+                    password_confirmation: '#HQ$lz$$blSbZ2tsnd0v'

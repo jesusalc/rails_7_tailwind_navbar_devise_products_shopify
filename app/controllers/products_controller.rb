@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class ProductsController < ApplicationController
+  include ActionView::RecordIdentifier
   before_action :set_product, only: %i[show edit update destroy]
   before_action :require_login
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :clear_flash_errors
 
   # GET /products or /products.json
   def index
-    @products = Product.all
+    @products = Product.all.order(created_at: :desc)
   end
 
   # GET /products/1 or /products/1.json
@@ -24,13 +26,63 @@ class ProductsController < ApplicationController
 
   # POST /products or /products.json
   def create
-    @product = Product.new(product_params)
+    if api_create(product_params)
+      @product = Product.new(product_params)
 
-    respond_to do |format|
-      if @product.save
-        format.html { redirect_to product_url(@product), notice: 'Product was successfully created.' }
-        format.json { render :show, status: :created, location: @product }
-      else
+      respond_to do |format|
+        if @product.save
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.update('index_turbo_new_product',
+                                  partial: 'products/form',
+                                  locals: { product: Product.new }),
+              turbo_stream.prepend('index_turbo_products',
+                                   partial: 'products/product',
+                                   locals: { product: @product }),
+              turbo_stream.update('flash_turbo_shared_flash_notice',
+                                  partial: 'shared/flash_notice',
+                                  locals: { flash: flash })
+            ]
+          end
+          format.html do
+            redirect_to product_url(@product), notice: 'Produkt wurde erfolgreich in der Datenbank gespeichert'
+          end
+          format.json { render :show, status: :created, location: @product }
+        else
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.update('index_turbo_new_product',
+                                  partial: 'products/form',
+                                  locals: {
+                                    product: @product,
+                                    status: :unprocessable_entity
+                                  },
+                                  status: :unprocessable_entity),
+              turbo_stream.update('flash_turbo_shared_flash_notice',
+                                  partial: 'shared/flash_notice',
+                                  locals: { flash: flash })
+            ]
+          end
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @product.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('index_turbo_new_product',
+                                partial: 'products/form',
+                                locals: {
+                                  product: Product.new(product_params),
+                                  status: :unprocessable_entity
+                                },
+                                status: :unprocessable_entity),
+            turbo_stream.update('flash_turbo_shared_flash_notice',
+                                partial: 'shared/flash_notice',
+                                locals: { flash: flash })
+          ]
+        end
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
@@ -39,11 +91,47 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
-    respond_to do |format|
-      if @product.update(product_params)
-        format.html { redirect_to product_url(@product), notice: 'Product was successfully updated.' }
-        format.json { render :show, status: :ok, location: @product }
-      else
+    if api_update(product_params)
+      respond_to do |format|
+        if @product.update(product_params)
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.update('index_turbo_new_product',
+                                  partial: 'products/form',
+                                  locals: { product: Product.new })
+            ]
+          end
+          format.html { redirect_to product_url(@product), notice: 'Product was successfully updated.' }
+          format.json { render :show, status: :ok, location: @product }
+        else
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.update('index_turbo_new_product',
+                                  partial: 'products/form',
+                                  locals: {
+                                    product: @product,
+                                    status: :unprocessable_entity
+                                  },
+                                  status: :unprocessable_entity)
+            ]
+          end
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @product.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('index_turbo_new_product',
+                                partial: 'products/form',
+                                locals: {
+                                  product: @product,
+                                  status: :unprocessable_entity
+                                },
+                                status: :unprocessable_entity)
+          ]
+        end
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
@@ -57,16 +145,88 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
       format.json { head :no_content }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@product)) }
     end
   end
 
   private
 
+  def api_update(params)
+    new_product = product_template(params)
+    shop_url = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com"
+    Shopify::Base.site = shop_url
+    Shopify::Base.api_version = ENV['SHOPIFY_API_VERSION'] # '<version_name>' # find the latest stable api_version here: https://shopify.dev/concepts/about-apis/versioning
+    shop = Shopify::Shop.current
+    byebug
+    flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
+    response = RestClient.post "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json",
+                               product: new_product
+    return false if response.nil?
+
+    flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gesendet'
+    true
+  rescue RestClient::UnprocessableEntity
+    false
+  rescue SocketError
+    flash[:error] = 'Es gibt keine Internet nach Shopify'
+    false
+  end
+
+  def api_create(params)
+    new_product = product_template(params)
+    response = RestClient.post "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json",
+                               product: new_product
+    if response.nil?
+      flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
+      return false
+    end
+    flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gesendet'
+    true
+  rescue RestClient::UnprocessableEntity
+    flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
+    false
+  rescue SocketError
+    flash[:error] = 'Es gibt keine Internet nach Shopify'
+    false
+  rescue  RestClient::BadRequest
+    flash[:error] = 'Schlechte Anfrage'
+    false
+  end
+
+  def product_template(params)
+    {
+      "title": params['title'],
+      "body": params['description'],
+      "vendor": 'New', # params["vendor"],
+      "product_type": 'New', # params["prod_type"],
+      "published": false,
+      "variants":
+        [
+          { "option1": params['title'], # params["var1"],
+            "price": params['price'],
+            "sku": "#{rand(100...10_000)}NEW", # "123",
+            "inventory_quantity": '1' } # params["qty1"]
+        ]
+    }
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_product
     @product = Product.friendly.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = "Cannot find record for: '#{params[:id]}'"
+    respond_to do |format|
+      format.html { redirect_to products_url }
+      format.json { head :no_content }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@product)) }
+    end
   end
 
+  def clear_flash_errors
+    flash = {}
+    flash[:error] = ''
+    flash[:notice] = ''
+  end
   # Only allow a list of trusted parameters through.
   def product_params
     params.require(:product).permit(:title, :description, :image, :price)

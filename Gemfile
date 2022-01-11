@@ -71,6 +71,9 @@ group :development do
   # gem "spring"
   gem 'better_errors', '~> 2.9'
   gem 'binding_of_caller'
+  gem 'byebug', '~> 11.1'
+  gem 'pry'
+  gem 'pry-rails', '~> 0.3.9'
 end
 
 group :test do
@@ -80,9 +83,11 @@ group :test do
   gem 'webdrivers'
 end
 # to allow us to hide our API key and password in a .env file:
+gem 'devise', '~> 4.8'
+
+gem 'activeresource' # shopify_api
 gem 'dotenv-rails'
 gem 'friendly_id'
-gem 'pry'
+gem 'graphql-client' # shopify_api
 gem 'rest-client'
-
-gem 'devise', '~> 4.8'
+# gem 'shopify_api' # not compatible with rails 7

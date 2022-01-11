@@ -3,7 +3,11 @@
 require_relative 'boot'
 
 require 'rails/all'
-
+require 'active_support'
+require 'active_support/hash_with_indifferent_access'
+require 'active_support/core_ext/hash/keys'
+require 'active_support/core_ext/hash/reverse_merge'
+require 'active_support/core_ext/hash/indifferent_access'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

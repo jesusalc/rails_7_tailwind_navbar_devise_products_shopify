@@ -1,27 +1,103 @@
-<div id="<%= dom_id product %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Title:</strong>
-    <%= product.title %>
-  </p>
+<div id="<%= dom_id product %>" class="flex font-sans">
+  <div class="flex-none w-48 mb-10 relative z-10 before:absolute before:top-1 before:left-1 before:w-full before:h-full before:bg-teal-400">
+<!--  <div class="flex-none w-48 relative">-->
+    <% image_srcset = '' %>
+    <% placeholder = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARMAAAC3CAMAAAAGjUrGAAAAMFBMVEXx8/XDzNPAydH09vfw8vTO1dvp7O/R2N3e4+fK0tji5urGztXr7vDa4OTX3eLn6u3eTM5cAAAFLklEQVR4nO2c2ZasIAxFNU5lqeX//+116Bo0OASC4F1nP3U/NFK7gYQIlaRgTRK6AxECJxw44cAJB044cMKBEw6ccOCEAyccOOHACQdOOHDCgRMOnHDghAMnHDjhwAkHTjhwwoETDpxw4IQDJxw44cAJB044cMKBEw6ccOCEAyccOOHACQdOOHDCgRMOnHDghAMnHDjhwAkHTjhwwrmdEyJq6qKqqqJuhp/JwyNu5YSofj3bJPvQ9l2Rqmu5jxOi4plnWbIiy8qu1h0ud3FCaZczHx8v+aNWtHIPJ9Q8N4X8aSkrtcFyByeUHhmZrCSd0tJyAyf0Ohbyp+XZaFiJ3gnV2+uIwcpDYaxE7+QhMDLROUuJ2wk1rVTJEIQqRytRO6FKKmS2UrotKzE7oU48SN5WXi5SInZCpa2SQUrrMFQidtJaG3EcKtE6aXInJYOU3vbRsTpxVjJaKeyGSqRONJSMGZyVlDid6CgZo7LN06N0oqVkxKKIEKUTRSVJJs9qI3RCbkGYSRFvgOJzQqWqkrGCIJSi64TIuZROZ+pHQimlrEuKTqju+jbL26dLbdR+j7NH20j6oOaE6v79aVx264UPJUmSS6RoOaHq98OIp/Cb2o+SQUp9vhNKTui1/DBZbydFMwqvOD+jlZywIW81UtRDzqJHp3c/Ok4aQxcqcSskrr36kaLihB6GLuTigeJpfRVL0XFi7oGwFcNgCyNFxUll/AcLN+rKKb2DFA0n1Bk7IMsePS8mbylnQrKKk6f5+SInvhcTgRQVJ727E82SyS4nMlqP4yQRONnQ6oVDKSpOTKF42Hidd7JOg72SH/VGJe6Y1wJB3GkuVHK8+HvMT87vuq4Iw78cjGClPNbwfz4/da4Jwz8cbMZ09jvEo4YgjfVWINiWsjuvve2Lz68mBqH+pexVvbTqJ6v0XlAq8FCAPSNlJ8vXq7Mtnih4f3BRAsvYDgGKNern+5BzVgqq1MaYdQXtZpc06/Zp1bd53neS4zBbOfAFbKYpHt7viP4i1MxJdta8wO8Bg82cScrGUaawTgLOnEmKOYcK6yTgzJmlGHsV1kmAbG2JsZAe0snl+xwDpnXW7GSOH+6HBPYJPXNGTOuswcmQZ3R92yZDj8vy8apTX2KCz5wRwzq7dkLpq11cuht+aR/KF+7mJ0UwcyYOnFDz4LcQE/ULdxMxzJwJVuhZONk7EJOVleqt1RAVAjOsrLFwsn9ZJsu1LtylwbO1Besl5euETpS7VK6WTUQzc0ZWqdvHydn7Q043Y75EM3Mmllvkt5N1oWwT96tlaUQx54/lkpIIlYwNtM4xKKqZM7JYUmYnJOvksKw4EbRCYOb35eDspBa2kOWWV2NmJRHFnA8/S8rsRN6E9WnPdOsIT2B+Nj6jE7v0KbddVfyf0bLi+y43sT/nIL/wMOH1wKcLn0J+4nKL1+YWlZ8D9Rp8AnLiNrvlS+31L4dP8z7Sm7jNbosLQzHz10XH2S2cP1ee0bJgviXg3o4kq413MZmZA7JGS+c3QNHl9GuyRsnJ6a8GuPbYmhVjOqvSUPY8pySuAoGRMWgotbR9cOFLtMnaklotNB4fT4485Hxo9XbtRzvlMEe0LMjMNyrs2toNP7FV1i5iL6e9zSjRZvv8p8tXI92czRu094g4njDdeaAidK9Cw8JP7HucK1gm+lRJvsLyf+Xn220pfcHITJb3r6ooqq5PYOTL9K3ioTsBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIiPf6H0bZs4vG/nAAAAAElFTkSuQmCC'.html_safe %>
+    <% broken = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATUAAACjCAMAAADciXncAAAAw1BMVEX////Pz8/x8fHU1NTt7e27u7sAAACampqxsbHg4OCLi4u2traQkJDd3d3GxsbCwrzJybxYWFioqKjBwMGvta5QiUqIpoWYmJhEqTQn1AAjYxuHhIh1dXVBQUEdHR3k5OSqtakAgQAinAAAVwBqZmpJSUmWnJVZXli9x8eKit0AAP8AAH/DrKr2LheFft0cr/8kpP/Cr8f+AO7xRTMAALXLy9v/AP/+AOPvTVOOkIkfHwDfAOToDcDsgXYtQyxPYU8sLCzA/HFrAAACPUlEQVR4nO3XWU/UYABG4S4zZcrQFiiuqMUFGMFdQRS3//+rqJW5MBknzQlJ++F5btrLNydfukSRJEmSJP2tSfUPa6rFzUSrJNN11ZKbPr23hdUIqxFWI6xGWI2wGmE1wmqE1QirEVYjrEZYjbAaYTXCaoTVCKsRViOsRliNsBphNcJqhNUIqxFWI6xGWI2wGmE1wmqE1QirEVYjrEZYjbAaYTXCaoTVCKsRViOsRliNsBphNcJqhNUIqxFWI6xGWI2wGmE1wmqE1QirEVYjrEYEUG1jaTYZespSANWy+eyPrY1xDAqjWlQURZ4X+e58Po5FYVSb1nt37pb1vTwZSbYwqu3df/Bwv3z0eOdJM/SaThjVDp4+e/6inO8Wh/nQazphVKuPsuNqe7uKDouh13TCqLaop9XLk5PTeOgt14Ko9ur1oq7evH13Wg295VoQ1d5/+Lhoz9qns6GnLIVR7fzzRf3la3vSfK711Va7vPz2vf2dSpMd36E9ZdHsx8+j9iaJrdZbFsXdt+0kTSOr9ZWV3aWZ1nX5y2o9bW51l3jzt3FMCqDaCFmNsBphNcJqhNUIqxFWI6xGWI2wGmE1wmqE1QirEVYjrEZYjbAaYTXCaoTVCKsRViOsRliNsBphNcJqhNUIqxFWI6xGWI2wGmE1wmqE1QirEVYjrEZYjbAaYTXCaoTVCKsRViOsRliNsBphNcJqhNUIqxFWI6xGWI2wGmE1wmrE2mpNopXWVctjrZbe9OGVJEmSpP/WFU/FHa6ht3PsAAAAAElFTkSuQmCC'.html_safe %>
+    <% image_src = (product&.image ? product.image : placeholder) %>
+    <% image_srcset = product.image if product&.image&.include?(',') %>
+    <% image_src = product.image.split(',').last if product&.image&.include?(',') %>
+    <img id="img_<%= dom_id product %>" src="<%= image_src %>" srcset="<%= image_srcset %>"
+         alt="<%= product.title %>"
+         class="absolute z-10 inset-0 w-full h-full object-cover rounded-lg" />
+<!--    <img src="<%#= image_src %>" srcset="<%#= image_srcset %>" alt="<%#= product.title %>" class="absolute inset-0 w-full h-full object-cover" />-->
+    <textarea><%= image_src %></textarea>
+    <div style="display:none">
+      <script >
+          const imgimg_<%= dom_id product %> = document.getElementById("img_<%= dom_id product %>");
+          imgimg_<%= dom_id product %>.addEventListener('error', function handleError() {
+              console.log("failed to load: <%= image_src %> for product <%=  product.title %> for product id <%=  product.id %>" );
+              imgimg_<%= dom_id product %>.src = '<%= broken %>';
+              <%#=
+               // imgimg_<%= dom_id product % >.style.display = 'none'; //which hides the image
+              // imgimg_<%= dom_id product % >.style.visibility = 'hidden'; //Alternatively, you can set the image's visibility property to hidden, which would make the image invisible, but still take space on the page.
+              // 👇️ if set to non-existent image, causes infinite loop
+              // imgimg_<%= dom_id product % >.src = 'backup.webp'; // 👈️ must be a valid image
+              %>
+          });
+      </script>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= product.description %>
-  </p>
+    </div>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Image:</strong>
-    <%= product.image %>
-  </p>
+  </div>
+  <form class="flex-auto p-6">
+    <div class="flex flex-wrap">
+      <h1 class="flex-auto text-lg font-semibold text-gray-900">
+        <%= product.title %>
+      </h1>
+      <div class="text-lg font-semibold text-gray-500">
+        €<%= product.price %>
+      </div>
+      <div class="w-full flex-none text-sm font-medium text-gray-700 mt-2">
+        Auf Lager
+      </div>
+    </div>
+    <div class="flex items-baseline mt-4 mb-6 pb-6 border-b border-gray-200">
+      <div class="space-x-2 flex text-sm">
+        <% %w[XS S M L XL].each do |r| %>
+          <label>
+            <input class="sr-only peer" name="size" type="radio" value="<%= r.downcase %>" checked />
+            <button class="w-9 h-9 rounded-lg flex items-center justify-center text-gray-700 peer-checked:font-semibold peer-checked:bg-gray-900 peer-checked:text-white">
+              <%= r %>
+            </button>
+          </label>
+        <% end %>
+      </div>
+    </div>
+    <div class="flex space-x-4 mb-6 text-sm font-medium">
+      <div class="flex-auto flex space-x-4">
+        <button class="h-10 px-6 font-semibold rounded-md bg-black text-white " type="submit">
+          Jetzt kaufen
+        </button>
+        <button class="h-10 px-6 font-semibold rounded-md border border-gray-200 text-gray-900" type="button">
+          Zur Tasche hinzufügen
+        </button>
+      </div>
+      <button class="flex-none flex items-center justify-center w-9 h-9 rounded-md text-gray-300 border border-gray-200" type="button" aria-label="Like">
+        <svg width="20" height="20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+        </svg>
+      </button>
+    </div>
+    <p class="text-sm text-gray-700">
+      Kostenloser Versand bei Bestellungen innerhalb Deutschlands.
+    </p>
+    <% if action_name != "show" %>
+      <%= link_to "Show", product, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+      <%= link_to product, method: :delete do %>
+        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+          <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+        </svg>
+      <% end %>
+      <%= link_to 'Edit', edit_product_path(product), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
+      <%= button_to product_path(product),
+                    class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium",
+                    method: :delete,
+                    data: {
+                      "turbo-method": :delete,
+                      controller: "confirmation",
+                      confirm: "Sind Sie sicher, dass Sie diesen Produkt löschen wollen?",
+                      "confirmation-message-value": "Sind Sie sicher, dass Sie diesen Produkt löschen wollen?",
+                      action: "confirmation#confirm"
+                    }  do %>
+        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+          <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+        </svg>
+      <% end %>
+      <hr class="mt-6">
+    <% end %>
+  </form>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Price:</strong>
-    <%= product.price %>
-  </p>
-
-  <% if action_name != "show" %>
-    <%= link_to "Show this product", product, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to 'Edit this product', edit_product_path(product), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
-    <hr class="mt-6">
-  <% end %>
 </div>

@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20_220_110_141_411) do
     t.text 'description'
     t.text 'image'
     t.decimal 'price', precision: 8, scale: 2
+    t.datetime 'synced_at', precision: 6, default: '2022-01-10 18:26:53'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.string 'slug'

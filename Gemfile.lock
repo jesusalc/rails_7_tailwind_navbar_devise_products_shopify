@@ -51,9 +51,17 @@ GEM
       globalid (>= 0.3.6)
     activemodel (7.0.1)
       activesupport (= 7.0.1)
+    activemodel-serializers-xml (1.0.2)
+      activemodel (> 5.x)
+      activesupport (> 5.x)
+      builder (~> 3.1)
     activerecord (7.0.1)
       activemodel (= 7.0.1)
       activesupport (= 7.0.1)
+    activeresource (6.0.0)
+      activemodel (>= 6.0)
+      activemodel-serializers-xml (~> 1.0)
+      activesupport (>= 6.0)
     activestorage (7.0.1)
       actionpack (= 7.0.1)
       activejob (= 7.0.1)
@@ -79,6 +87,7 @@ GEM
     bootsnap (1.9.3)
       msgpack (~> 1.0)
     builder (3.2.4)
+    byebug (11.1.3)
     capybara (3.36.0)
       addressable
       matrix
@@ -116,6 +125,10 @@ GEM
       activerecord (>= 4.0.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    graphql (1.13.2)
+    graphql-client (0.17.0)
+      activesupport (>= 3.0)
+      graphql (~> 1.10)
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
@@ -172,6 +185,8 @@ GEM
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     public_suffix (4.0.6)
     puma (5.5.2)
       nio4r (~> 2.0)
@@ -224,6 +239,10 @@ GEM
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
+    shopify_api (6.0.0)
+      activeresource (>= 3.0.0)
+      graphql-client
+      rack
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -269,24 +288,29 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  activeresource
   better_errors (~> 2.9)
   binding_of_caller
   bootsnap
+  byebug (~> 11.1)
   capybara
   debug
   devise (~> 4.8)
   dotenv-rails
   faker (~> 2.19)
   friendly_id
+  graphql-client
   importmap-rails
   jbuilder
   letter_opener (~> 1.7)
   pry
+  pry-rails (~> 0.3.9)
   puma (~> 5.0)
   rails (~> 7.0.0)
   redis (~> 4.0)
   rest-client
   selenium-webdriver
+  shopify_api
   sprockets-rails
   sqlite3 (~> 1.4)
   stimulus-rails
