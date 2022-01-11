@@ -5,12 +5,15 @@ Syncs Load DB Table of Products Title, Description, Image, Price with Shopify.
 
 ### What's under the hood?
 
--   Powered by [Ruby on Rails 7](https://rubyonrails.org)
--   [Friendly ID](https://github.com/norman/friendly_id) preconfigured for your next app idea.
--   [Devise](https://github.com/heartcombo/devise) authentication strategies out of the box based on a default User model.
--   [Tailwind CSS](https://tailwindcss.com) by default (optionally swap for Bootstrap, Bulma, PostCSS, or Sass*).
--   Customized and easily themeable Devise views.
--   View helpers for quick form styling with Tailwind CSS.
+- Powered by [Ruby on Rails 7](https://rubyonrails.org)
+- [Friendly ID](https://github.com/norman/friendly_id) preconfigured for your next app idea.
+- [Devise](https://github.com/heartcombo/devise) authentication strategies out of the box based on a default User model.
+- [Tailwind CSS](https://tailwindcss.com) by default (optionally swap for Bootstrap, Bulma, PostCSS, or Sass*).
+- Customized and easily themeable Devise views.
+- View helpers for quick form styling with Tailwind CSS.
+
+
+### Install . How to use
 
 ```bash
     rbenv install 3.1.0 
@@ -42,3 +45,14 @@ Syncs Load DB Table of Products Title, Description, Image, Price with Shopify.
     rails s
 
 ```
+### Screenshots
+![](about_view.png)
+![](bike_edit_view.png)
+![](bike_view.png)
+![](delete_confirmation.png)
+![](necklace_view.png)
+![](banners_for_flash_errors.png)
+![](banners_for_flash_notices.png)
+
+
+
