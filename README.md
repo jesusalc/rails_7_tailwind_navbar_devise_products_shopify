@@ -1,27 +1,18 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Shopify Ruby 3.1.0 Rails 7 CRUD Tailwind Turbo Sync Starter
 
-Things you may want to cover:
+Syncs Load DB Table of Products Title, Description, Image, Price with Shopify.
 
-* Ruby version
+### What's under the hood?
 
-* System dependencies
+-   Powered by [Ruby on Rails 7](https://rubyonrails.org)
+-   [Friendly ID](https://github.com/norman/friendly_id) preconfigured for your next app idea.
+-   [Devise](https://github.com/heartcombo/devise) authentication strategies out of the box based on a default User model.
+-   [Tailwind CSS](https://tailwindcss.com) by default (optionally swap for Bootstrap, Bulma, PostCSS, or Sass*).
+-   Customized and easily themeable Devise views.
+-   View helpers for quick form styling with Tailwind CSS.
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-
+```bash
     rbenv install 3.1.0 
     rbenv local 3.1.0
     bundle
@@ -30,14 +21,24 @@ Things you may want to cover:
     gem install shopify_cli
     rbenv rehash
     shopify login --store=gmbh-teststore
+
+
     
     cp .env.sample .env
     nano .env
     # add all the values for your store 
-    
+
+
+
     rails s
     rm db/development.sqlite3 db/test.sqlite3 ; rake db:create db:migrate db:seed
     # browser opens and asks for confirmation of first user
     # control c
-    rails s
     
+    # do intial sync download into load table 
+    rake products:get
+
+
+    rails s
+
+```
