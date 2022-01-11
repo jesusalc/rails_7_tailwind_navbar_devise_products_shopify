@@ -13,7 +13,8 @@
     </div>
   </div>
   <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Products</h1>
+    <h1 class="font-bold text-4xl">Products
+    <span id="index_turbo_count"><%= Product.count %></span></h1>
     <%= link_to new_product_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium", value: "Neu" do %>
       <svg class="group-hover:text-light-blue-600 text-light-blue-500 mr-2" width="12" height="20" fill="currentColor">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M6 5a1 1 0 011 1v3h3a1 1 0 110 2H7v3a1 1 0 11-2 0v-3H2a1 1 0 110-2h3V6a1 1 0 011-1z"/>

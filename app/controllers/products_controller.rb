@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'shopify/shopify_api'
 
 class ProductsController < ApplicationController
   include ActionView::RecordIdentifier
@@ -22,7 +23,20 @@ class ProductsController < ApplicationController
   end
 
   # GET /products/1/edit
-  def edit; end
+  def edit
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.update('index_turbo_new_product',
+                              partial: 'products/article_form',
+                              locals: { product: @product }),
+          turbo_stream.update('flash_turbo_shared_flash_notice',
+                              partial: 'shared/flash_notice',
+                              locals: { flash: flash })
+        ]
+      end
+    end
+  end
 
   # POST /products or /products.json
   def create
@@ -41,7 +55,8 @@ class ProductsController < ApplicationController
                                    locals: { product: @product }),
               turbo_stream.update('flash_turbo_shared_flash_notice',
                                   partial: 'shared/flash_notice',
-                                  locals: { flash: flash })
+                                  locals: { flash: flash }),
+              turbo_stream.update('index_turbo_count', html: Product.count)
             ]
           end
           format.html do
@@ -98,7 +113,10 @@ class ProductsController < ApplicationController
             render turbo_stream: [
               turbo_stream.update('index_turbo_new_product',
                                   partial: 'products/article_form',
-                                  locals: { product: Product.new })
+                                  locals: { product: Product.new }),
+              turbo_stream.update('flash_turbo_shared_flash_notice',
+                                  partial: 'shared/flash_notice',
+                                  locals: { flash: flash })
             ]
           end
           format.html { redirect_to product_url(@product), notice: 'Product was successfully updated.' }
@@ -112,7 +130,10 @@ class ProductsController < ApplicationController
                                     product: @product,
                                     status: :unprocessable_entity
                                   },
-                                  status: :unprocessable_entity)
+                                  status: :unprocessable_entity),
+              turbo_stream.update('flash_turbo_shared_flash_notice',
+                                  partial: 'shared/flash_notice',
+                                  locals: { flash: flash })
             ]
           end
           format.html { render :edit, status: :unprocessable_entity }
@@ -129,7 +150,10 @@ class ProductsController < ApplicationController
                                   product: @product,
                                   status: :unprocessable_entity
                                 },
-                                status: :unprocessable_entity)
+                                status: :unprocessable_entity),
+            turbo_stream.update('flash_turbo_shared_flash_notice',
+                                partial: 'shared/flash_notice',
+                                locals: { flash: flash })
           ]
         end
         format.html { render :edit, status: :unprocessable_entity }
@@ -140,17 +164,42 @@ class ProductsController < ApplicationController
 
   # DELETE /products/1 or /products/1.json
   def destroy
-    @product.destroy
+    if api_destroy(@product.id)
+      @product.destroy
 
-    respond_to do |format|
-      format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
-      format.json { head :no_content }
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@product)) }
+      respond_to do |format|
+        format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
+        format.json { head :no_content }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.remove(dom_id(@product)),
+            turbo_stream.update('index_turbo_count', html: Product.count)
+          ]
+        end
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.update('index_turbo_new_product',
+                                partial: 'products/article_form',
+                                locals: {
+                                  product: @product,
+                                  status: :unprocessable_entity
+                                },
+                                status: :unprocessable_entity),
+            turbo_stream.update('flash_turbo_shared_flash_notice',
+                                partial: 'shared/flash_notice',
+                                locals: { flash: flash })
+          ]
+        end
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   private
-
 
   def api_update(params)
     new_product = product_template(params)
@@ -173,6 +222,30 @@ class ProductsController < ApplicationController
     false
   end
 
+  def api_destroy(product_id)
+    # new_product = product_template(params)
+    #                                                                                                                                     DELETE /admin/api/2021-07/products/632910392.json
+    response = RestClient.delete "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products/#{product_id}.json"
+    if response.nil?
+      flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
+      return false
+    end
+    flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gesendet'
+    true
+  rescue RestClient::Unauthorized
+    flash[:error] = 'Shopify sagt 401 Nicht autorisiert'
+    false
+  rescue RestClient::UnprocessableEntity
+    flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
+    false
+  rescue SocketError
+    flash[:error] = 'Es gibt keine Internet nach Shopify'
+    false
+  rescue RestClient::BadRequest
+    flash[:error] = 'Schlechte Anfrage'
+    false
+  end
+
   def api_create(params)
     new_product = product_template(params)
     response = RestClient.post "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json",
@@ -192,28 +265,7 @@ class ProductsController < ApplicationController
   rescue SocketError
     flash[:error] = 'Es gibt keine Internet nach Shopify'
     false
-  rescue  RestClient::BadRequest
-    flash[:error] = 'Schlechte Anfrage'
-    false
-  end
-
-  def api_destroy(params)
-    new_product = product_template(params)
-    response = RestClient.post "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json",
-                               product: new_product
-    if response.nil?
-      flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
-      return false
-    end
-    flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gesendet'
-    true
-  rescue RestClient::UnprocessableEntity
-    flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
-    false
-  rescue SocketError
-    flash[:error] = 'Es gibt keine Internet nach Shopify'
-    false
-  rescue  RestClient::BadRequest
+  rescue RestClient::BadRequest
     flash[:error] = 'Schlechte Anfrage'
     false
   end
@@ -252,8 +304,10 @@ class ProductsController < ApplicationController
     flash[:error] = ''
     flash[:notice] = ''
   end
+
   # Only allow a list of trusted parameters through.
   def product_params
-    params.require(:product).permit(:title, :description, :image, :price)
+    params.require(:product).permit(:id, :title, :description, :image, :price)
   end
 end
+

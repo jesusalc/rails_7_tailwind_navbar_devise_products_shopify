@@ -22,6 +22,8 @@ Things you may want to cover:
 * Deployment instructions
 
 
+    shopify login --store=gmbh-teststore
+
     cp .env.sample .env
     nano .env
     # add all the values for your store 
