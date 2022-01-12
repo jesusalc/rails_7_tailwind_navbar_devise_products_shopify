@@ -10,7 +10,7 @@
   </div>
   <%= render "shared/navbar" %>
 </header>
-<p><%= Time.zone.now %></p>
+
 <main class="container mx-auto px-5 flex flex-grow">
   <%= content_for?(:content) ? yield(:content) : yield %>
 </main>

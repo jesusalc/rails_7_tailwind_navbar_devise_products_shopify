@@ -202,15 +202,27 @@ class ProductsController < ApplicationController
   private
 
   def api_update(params)
-    new_product = product_template(params)
-    shop_url = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com"
+    # Authentication
+    shop_url = "https://#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/shop.json"
+    oath_string_of_json = RestClient.get "#{shop_url}", {'Content-Type' => 'application/json',
+                                          'X-Shopify-Access-Token' => ENV['SHOPIFY_API_PASSWORD']}
+    oath_hash = JSON.parse(oath_string_of_json)
+    shop_hash = oath_hash['shop']
+    byebug
+    update_product = product_template(params)
+    update_product['id'] = params[:id]
     flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
-    response = RestClient.put "#{shop_url}/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json",
-                              product: new_product
+    shop_url = "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com"
+    api_update_slug = "admin/api/#{ENV['SHOPIFY_API_VERSION']}/products.json"
+    # REF: https://shopify.dev/api/admin-rest#endpoints
+    response = RestClient.put "#{shop_url}/#{api_update_slug}", product: update_product
     return false if response.nil?
 
     flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gesendet'
     true
+  rescue RestClient::NotAcceptable
+    flash[:error] = '406 - die url-Anfrage wurde von shopify nicht akzeptiert'
+    false
   rescue RestClient::UnprocessableEntity
     false
   rescue SocketError
@@ -221,18 +233,21 @@ class ProductsController < ApplicationController
   def api_destroy(product_id)
     # new_product = product_template(params)
     #                                                                                                                                     DELETE /admin/api/2021-07/products/632910392.json
-    response = RestClient.delete "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/#{ENV['SHOPIFY_API_VERSION']}/products/#{product_id}.json"
+    response = RestClient.delete "https://#{ENV['SHOPIFY_API_KEY']}:#{ENV['SHOPIFY_API_PASSWORD']}@#{ENV['SHOPIFY_SHOP_NAME']}.myshopify.com/admin/api/2021-07/products/#{product_id}.json"
     if response.nil?
-      flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
+      flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gelöscht'
       return false
     end
-    flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gesendet'
+    flash[:notice] = 'Das Produkt wurde erfolgreich an Shopify gelöscht'
     true
+  rescue RestClient::NotFound
+    flash[:error] = '401 - URL für Shopify  Nicht gefunden'
+    false
   rescue RestClient::Unauthorized
     flash[:error] = 'Shopify sagt 401 Nicht autorisiert'
     false
   rescue RestClient::UnprocessableEntity
-    flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gesendet'
+    flash[:error] = 'Das Produkt war noch nicht erfolgreich an Shopify gelöscht'
     false
   rescue SocketError
     flash[:error] = 'Es gibt keine Internet nach Shopify'

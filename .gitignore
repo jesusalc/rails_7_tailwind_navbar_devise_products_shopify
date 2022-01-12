@@ -37,3 +37,7 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 .env
+.idea
+libffi.a
+libffi.so
+libffi.so.8

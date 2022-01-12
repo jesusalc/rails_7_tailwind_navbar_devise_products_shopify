@@ -58,6 +58,7 @@ group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'faker', '~> 2.19'
   gem 'letter_opener', '~> 1.7'
+  gem 'guard-livereload', require: false
 end
 
 group :development do
@@ -72,6 +73,10 @@ group :development do
   gem 'better_errors', '~> 2.9'
   gem 'binding_of_caller'
   gem 'byebug', '~> 11.1'
+  gem 'guard', require: false
+  gem 'guard-minitest', require: false
+  gem 'guard-zeus'
+  gem 'rack-livereload'
   gem 'pry'
   gem 'pry-rails', '~> 0.3.9'
 end
@@ -85,9 +90,10 @@ end
 # to allow us to hide our API key and password in a .env file:
 gem 'devise', '~> 4.8'
 
-gem 'activeresource' # shopify_api
+gem 'activeresource' # needed for shopify_api
 gem 'dotenv-rails'
 gem 'friendly_id'
-gem 'graphql-client' # shopify_api
+gem 'graphql-client' # needed for shopify_api
 gem 'rest-client'
-gem 'shopify_api' # not compatible with rails 7
+gem 'shopify_api' #  not compatible with rails 7 20220112
+gem 'ffi'
